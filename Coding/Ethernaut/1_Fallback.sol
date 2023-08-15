@@ -26,10 +26,10 @@ contract Fallback {
     }
 
   function contribute() public payable {
-    require(msg.value < 0.001 ether);
-    contributions[msg.sender] += msg.value;
-    if(contributions[msg.sender] > contributions[owner]) {
-      owner = msg.sender;
+    require(msg.value < 0.001 ether); // make sure amount of contribution is less than
+    contributions[msg.sender] += msg.value; // add amount to sender contributions
+    if(contributions[msg.sender] > contributions[owner]) { 
+      owner = msg.sender; // the sender will be owner if the contributions is more than owner (1000 * 1 ether)
     }
   }
 
@@ -37,10 +37,12 @@ contract Fallback {
     return contributions[msg.sender];
   }
 
-  function withdraw() public onlyOwner {
+  function withdraw() public onlyOwner { // onlyOwner modifier called here, so the one that execute withdraw function is only the 'owner'
     payable(owner).transfer(address(this).balance);
   }
 
+    // Fallback function
+    // Anytime ether is sent to this contract without any function specified, it will  transfer to this function
   receive() external payable {
     require(msg.value > 0 && contributions[msg.sender] > 0);
     owner = msg.sender;
