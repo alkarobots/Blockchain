@@ -3,20 +3,26 @@ pragma solidity ^0.8.0;
 
 contract Fallback {
 
-  mapping(address => uint) public contributions;
-  address public owner;
+  mapping(address => uint) public contributions; // Mapping a address to amount of contributions
+  address public owner; 
 
+    // Contructor = as soon as the contract initialized, this happen first. Just like initial state.
   constructor() {
-    owner = msg.sender;
-    contributions[msg.sender] = 1000 * (1 ether);
+    owner = msg.sender; 
+    contributions[msg.sender] = 1000 * (1 ether);  // Sender that initialized this contract has amount of contributions set to 1000 * 1 ether
   }
 
+    // Modifier = modify the behaviour of a function
+    // in This onlyOwner modifier, it is like control acces. 
+    // The only person that can interact with a specific function is only the 'owner'
+    // modifier called on a function, ex here is on withdraw function below.  
+    // When 
   modifier onlyOwner {
         require(
             msg.sender == owner,
-            "caller is not the owner"
+            "caller is not the owner" // If the prerequisity is false, then it will return this.
         );
-        _;
+        _; // if true, it will continue to the function
     }
 
   function contribute() public payable {
